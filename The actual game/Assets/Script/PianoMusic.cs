@@ -12,6 +12,8 @@ public class PianoMusic : MonoBehaviour
     [SerializeField] AudioSource pianoAudio;
     [SerializeField] GameObject player;
     [SerializeField] PlayerMovement movementScript;
+    [SerializeField] GameObject dNote;
+    [SerializeField] GameObject line;
 
     //Clips
     public AudioClip dNatural;
@@ -26,13 +28,13 @@ public class PianoMusic : MonoBehaviour
         pianoAudio = GetComponent<AudioSource>();
         player = GameObject.Find("Player");
         movementScript = player.GetComponent<PlayerMovement>();
+        dNote = GameObject.Find("DNote");
+        line = GameObject.Find("Line");
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
         //Reference to method
         PlayPianoMusic();
     }
@@ -45,5 +47,10 @@ public class PianoMusic : MonoBehaviour
             pianoAudio.clip = dNatural;
             pianoAudio.Play();
         }
+    }
+
+    void MusicGamePlay()
+    {
+
     }
 }
