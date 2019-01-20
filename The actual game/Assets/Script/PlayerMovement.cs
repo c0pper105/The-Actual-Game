@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField] Rigidbody2D playerRb;
+    [SerializeField] Animator sockAnim;
 
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
@@ -15,8 +16,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
+        sockAnim = GetComponent<Animator>();
 
-        speed = 15f;
+        speed = 10f;
         jumpForce = 600f;
     }
 
@@ -24,18 +26,34 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         PlayerJump();
+
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        PlayerControl(horizontal);
     }
 
     void FixedUpdate()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        PlayerControl(horizontal);
+        
         
     }
 
     void PlayerControl(float horizontal)
     {
         playerRb.velocity = new Vector2(horizontal * speed, playerRb.velocity.y);
+
+        if (horizontal > 0)
+        {
+            transform.localScale = new Vector2(-1, transform.localScale.y);
+            sockAnim.SetBool("isMoving", true);
+
+        } else if (horizontal < 0)
+        {
+            transform.localScale = new Vector2(1, transform.localScale.y);
+            sockAnim.SetBool("isMoving", true);
+        } else
+        {
+            sockAnim.SetBool("isMoving", false);
+        }
     }
 
     void PlayerJump()
