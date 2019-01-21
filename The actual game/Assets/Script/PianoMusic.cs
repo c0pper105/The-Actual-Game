@@ -18,6 +18,8 @@ public class PianoMusic : MonoBehaviour
     //Clips
     public AudioClip dNatural;
 
+    [SerializeField] bool isPlayingPiano;
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +32,7 @@ public class PianoMusic : MonoBehaviour
         movementScript = player.GetComponent<PlayerMovement>();
         dNote = GameObject.Find("DNote");
         line = GameObject.Find("Line");
+        isPlayingPiano = false;
     }
 
     // Update is called once per frame
@@ -37,11 +40,20 @@ public class PianoMusic : MonoBehaviour
     {
         //Reference to method
         PlayPianoMusic();
+        MusicGamePlay();
     }
 
     void PlayPianoMusic()
     {
-        //When player is overlapping piano and 
+        if (playerCol.bounds.Intersects(pianoCol.bounds) && movementScript.isStill)
+        {
+            isPlayingPiano = true;
+        } else
+        {
+            isPlayingPiano = false;
+        }
+
+        //When player is overlapping piano and "a" is pressed
         if (playerCol.bounds.Intersects(pianoCol.bounds) && Input.GetKeyDown("a") && movementScript.isStill)
         {
             pianoAudio.clip = dNatural;
@@ -51,6 +63,21 @@ public class PianoMusic : MonoBehaviour
 
     void MusicGamePlay()
     {
+        if (isPlayingPiano)
+        {
+            if (Input.GetKeyDown("a"))
+            {
+                float distance = Mathf.Abs(dNote.transform.position.y - line.transform.position.y);
+                Debug.Log(distance);
 
+                if ( distance <= 3)
+                {
+                    Debug.Log("Perfect");
+                } else if (distance >= 3)
+                {
+                    Debug.Log("Bad");
+                }
+            }
+        }
     }
 }
